@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Header</title>
+  </head>
+  <body>
+    <header>
+      <nav id="desktop-nav">
+        <div class="logo">Kevin Sandoval</div>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/admin">Admin</a></li>
+
+          <li><a href="/#about">About</a></li>
+          <li>
+            <a href="/#projects">Projects</a>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/kevinrsandoval">LinkedIn</a>
+          </li>
+          <li>
+            <a href="https://github.com/KevinSandoval12">GitHub</a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Hamburger Menu -->
+      <nav id="hamburger-nav">
+        <div class="logo">Kevin Sandoval</div>
+        <div>
+          <div class="hamburger-icon" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <ul class="menu-links">
+            <li>
+              <a href="/views/home.html#about" onclick="toggleMenu()">About</a>
+            </li>
+            <li>
+              <a href="/views/home.html#projects" onclick="toggleMenu()"
+                >Projects</a
+              >
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+  </body>
+</html>
