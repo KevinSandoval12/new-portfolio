@@ -1,5 +1,5 @@
 // How Did We Meet? Information
-let metBox = document.getElementById("meet");
+let metBox = document.getElementById("met");
 let otherBox = document.getElementById("other");
 let otherTitle = document.getElementById("otherTitle");
 

@@ -59,9 +59,9 @@ app.post("/confirm", async (req, res) => {
 
     // SQL INSERT query with placeholders to prevent SQL injection
 
-    const sql = `INSERT INTO contacts(fname, lname, email, met, message, format)
+    const sql = `INSERT INTO contacts(fname, lname, email, met, metInfo, message, format)
 
- VALUES (?, ?, ?, ?, ?, ?);`;
+ VALUES (?, ?, ?, ?, ?, ?, ?);`;
 
     // Parameters array must match the contact of ? placeholders
 
@@ -75,6 +75,8 @@ app.post("/confirm", async (req, res) => {
       contact.email,
 
       contact.met,
+
+      contact.metInfo,
 
       contact.message,
 
@@ -115,8 +117,8 @@ app.get("/admin", async (req, res) => {
           month: "short",
           day: "numeric",
           hour: "numeric",
-          minute: "2-digit",
           hour12: true,
+          timeZoneName: undefined,
         }
       );
     });
@@ -149,14 +151,15 @@ app.post("/submit-form", async (req, res) => {
 
     console.log("New contact recieved:", contact);
     const sql = `INSERT INTO contacts
-                  (fname, lname, email, met, message, format, timestamp)
-                  VALUES (?, ?, ?, ?, ?, ?, ?)`;
+                  (fname, lname, email, met, metInfo, message, format, timestamp)
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const params = [
       contact.fname,
       contact.lname,
       contact.email,
       contact.met,
+      contact.metInfo,
       contact.message,
       contact.format,
       contact.timestamp,
@@ -166,7 +169,7 @@ app.post("/submit-form", async (req, res) => {
 
     console.log("Contact inserted with ID:", result.insertId);
 
-    res.render("confirm", { contact: contact });
+    res.render("confirmation", { contact: contact });
   } catch (err) {
     console.error("Error inserting contact:", err);
 
