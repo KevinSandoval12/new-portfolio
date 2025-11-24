@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/KevinSandoval12/guestbook/issues"
   },
-  "homepage": "https://github.com/KevinSandoval12/guestbook#readme"
+  "homepage": "https://github.com/KevinSandoval12/guestbook#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
 }

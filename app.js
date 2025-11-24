@@ -8,7 +8,7 @@ dotenv.config();
 const pool = mysql2
   .createPool({
     host: process.env.DB_HOST,
-    user: process.env.USER,
+    user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     port: process.env.DB_PORT,
@@ -35,7 +35,7 @@ const PORT = 3111;
 // res: allows us to send back a response to the client
 app.get("/db-test", async (req, res) => {
   try {
-    const [contatcs] = await pool.query("SELECT * FROM contacts");
+    const [contacts] = await pool.query("SELECT * FROM contacts");
     res.send(contacts);
   } catch (err) {
     console.error("Database Error:", err);
@@ -47,14 +47,65 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
-app.get("/confirm", (req, res) => {
+app.post("/confirm", async (req, res) => {
+  try {
+    // Get form data from req.body
+
+    const contact = req.body;
+
+    // Log the contact data (for debugging)
+
+    console.log("New contact submitted:", contact);
+
+    // SQL INSERT query with placeholders to prevent SQL injection
+
+    const sql = `INSERT INTO contacts(fname, lname, email, met, message, format)
+
+ VALUES (?, ?, ?, ?, ?, ?);`;
+
+    // Parameters array must match the contact of ? placeholders
+
+    // Make sure your property names match your contact names
+
+    const params = [
+      contact.fname,
+
+      contact.lname,
+
+      contact.email,
+
+      contact.met,
+
+      contact.message,
+
+      contact.format,
+    ];
+
+    // Execute the query and grab the primary key of the new row
+
+    const [result] = await pool.execute(sql, params);
+
+    console.log("Contact saved with ID:", result.insertId);
+
+    // Render confirmation page with the adoption data
+
+    res.render("confirmation", { contact });
+  } catch (err) {
+    console.error("Error saving contact:", err);
+
+    res
+      .status(500)
+      .send(
+        "Sorry, there was an error processing your contact. Please try again."
+      );
+  }
   res.render("confirmation");
 });
 
 app.get("/admin", async (req, res) => {
   try {
-    const [contacts] = await pool.query("SELECT * FROM orders");
-    pool.query("SELECT * FROM orders ORDER BY timestamp DESC");
+    const [contacts] = await pool.query("SELECT * FROM contacts");
+    pool.query("SELECT * FROM contacts ORDER BY timestamp DESC");
 
     contacts.forEach((contact) => {
       contact.formattedTimestamp = new Date(contact.timestamp).toLocaleString(
@@ -98,14 +149,14 @@ app.post("/submit-form", async (req, res) => {
 
     console.log("New contact recieved:", contact);
     const sql = `INSERT INTO contacts
-                  (fname, lname, email, meet, message, format, timestamp)
+                  (fname, lname, email, met, message, format, timestamp)
                   VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
     const params = [
       contact.fname,
       contact.lname,
       contact.email,
-      contact.meet,
+      contact.met,
       contact.message,
       contact.format,
       contact.timestamp,
